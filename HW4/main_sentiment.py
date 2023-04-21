@@ -14,7 +14,7 @@ import torch.optim as optim
 from torch.utils.data import DataLoader,Dataset,TensorDataset
 # import pandas as pd
 from DataLoader import MovieDataset
-# from LSTM import LSTMModel
+from LSTM import LSTMModel
 from GloveEmbed import _get_embedding
 import time
 
@@ -110,8 +110,8 @@ def main():
     ## then import model from LSTM.py below
     ## and also load model to device
     ## -----------------------------------------------
-    model = LSTM()
-    model2 = CNN()
+    model = LSTMModel(vocab_size=vocab_size,output_size=output_size,embedding_dim=embedding_dim,embedding_matrix=embedding_matrix,hidden_dim=hidden_dim,n_layers=n_layers,input_len=input_len)
+    #model2 = CNN()
     model.to()
     ##-----------------------------------------------------------
     ## step 5: complete code to define optimizer and loss function
