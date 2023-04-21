@@ -191,10 +191,10 @@ def main():
             y_out = model(x_batch)
             y_pred = torch.round(y_out)
             num_correct = (y_pred == y_labels).sum().item()
-            true_pos += (y_pred == y_labels and y_pred == 1).sum().item()
-            true_neg += (y_pred == y_labels and y_pred == 0).sum().item()
-            false_pos += (y_pred != y_labels and y_pred == 1).sum().item()
-            false_neg += (y_pred != y_labels and y_pred == 0).sum().item()
+            true_pos += ((y_pred == y_labels) & (y_pred == 1)).sum().item()
+            true_neg += ((y_pred == y_labels) & (y_pred == 0)).sum().item()
+            false_pos += ((y_pred != y_labels) & (y_pred == 1)).sum().item()
+            false_neg += ((y_pred != y_labels) & (y_pred == 0)).sum().item()
             # Compute the total number of predictions
             num_total = y_labels.size(0)
             total_correct += num_correct
