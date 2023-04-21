@@ -36,7 +36,7 @@ class LSTMModel(nn.Module):
         ## define LSTM model
         self.lstm = nn.LSTM(embedding_dim, hidden_dim, n_layers, batch_first=True)
         ## dropout layer
-        self.dropout = nn.Dropout(0.3)
+        self.dropout = nn.Dropout(0.5)
         
         ## max pool
         self.pool = nn.MaxPool1d(self.input_len)
