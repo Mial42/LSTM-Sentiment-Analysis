@@ -67,7 +67,7 @@ def main():
     ## ---------------------------------------------------------
     mode = 'train'
     Batch_size =300
-    n_layers = 1 ## choose 1-3 layers
+    n_layers = args.n_layers # 1 ## choose 1-3 layers
 
     ## input seq length aligned with data pre-processing
     input_len = 150
