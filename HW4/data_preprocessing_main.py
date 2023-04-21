@@ -14,8 +14,8 @@ def _read_data():
 	## read the training and test data from files
 	## *** complete the code below ***
 	##-------------------------------------------
-	train_data = 
-	test_data = 
+	train_data = pd.read_csv('test_raw_data.csv', index_col = None, encoding = 'utf8')
+	test_data = pd.read_csv('train_raw_data.csv', index_col = None, encoding = 'utf8')
 
 	return train_data, test_data
 
@@ -27,7 +27,7 @@ def _data_preprocessing(input_data):
     ##----------------------------------------------------
     ## complete code below to convert words to lower case
     ##----------------------------------------------------
-    input_data['clean_text'] = 
+    input_data['clean_text'] = input_data['clean_text'].apply(lambda x : x.lower())
 
     return input_data
 
@@ -57,7 +57,7 @@ def _convert_labels(input_data):
 	## complete code below to convert "pos" and "neg"
 	## to boolean values 1 and 0
 	##------------------------------------------------
-	input_data['Label'] = 
+	input_data['Label'] = input_data['Label'].apply(lambda x: 0 if x == 'neg' else 1)
 
 	return input_data
 
@@ -85,8 +85,8 @@ def _map_tokens2index(input_data,top_K = 500):
     ##-----------------------------------------------------------
     ## complete code to add index for padding (0) and unknown (1)
     ##-----------------------------------------------------------
-    tokens2index['<pad>'] = 
-    tokens2index['<unk>'] = 
+    tokens2index['<pad>'] = 0
+    tokens2index['<unk>'] = 1
     
     ## save tokens2index to json files
     with open('tokens2index.json', 'w') as outfile:
@@ -109,6 +109,7 @@ def _pad_truncate_seq(x,seq_len):
     if len(x) >= seq_len:
         return x[:seq_len]
     else:
+      return x + [0] * (seq_len - len(x))
     	##-----------------------------------------------------------
     	## complete code to add padding "0" to the end of list of words
     	##-----------------------------------------------------------
