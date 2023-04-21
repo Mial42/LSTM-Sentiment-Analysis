@@ -36,6 +36,17 @@ def _save_checkpoint(ckp_path, model, epoches, global_step, optimizer):
     torch.save(checkpoint, ckp_path)
 
 
+def adjust_learning_rate(learning_rate, optimizer, epoch):
+    if epoch > 5:
+        lr = learning_rate / 10
+    elif epoch > 10:
+        lr = learning_rate / 100
+    elif epoch > 20:
+        lr = learning_rate / 1000
+    for param_group in optimizer.param_groups:
+        param_group['lr'] = lr
+
+
 def main():
     gpu_id = 0
     use_cuda = torch.cuda.is_available()
@@ -148,6 +159,7 @@ def main():
     if mode == 'train':
         model.train()
         for epoch in range(epoches, num_epoches):
+            adjust_learning_rate(learning_rate,optimizer,epoch)
             for batch_id, (x_batch,y_labels) in enumerate(training_generator):
                 
                 x_batch, y_labels = x_batch.to(device), y_labels.to(device)
