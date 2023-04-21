@@ -25,6 +25,7 @@ parser.add_argument("-embedding_dim", dest="embedding_dim", type=int, default=10
 parser.add_argument("-num_epoches", dest="num_epoches", type=int, default=50, help="number of epoches")
 parser.add_argument("-load_cpt", dest="load_cpt", type=int, default=False, help="load checkpoint")
 parser.add_argument("-hidden_dim", dest="hidden_dim", type=int, default=50, help="hidden dimension")
+parser.add_argument("-n_layers", dest="n_layers", type=int, default=1, help="n layers (1-3)")
 args = parser.parse_args()
 
 '''save checkpoint'''
