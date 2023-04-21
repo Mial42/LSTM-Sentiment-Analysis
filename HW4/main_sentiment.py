@@ -17,6 +17,7 @@ from DataLoader import MovieDataset
 from LSTM import LSTMModel
 from GloveEmbed import _get_embedding
 import time
+from torch.utils.tensorboard import SummaryWriter
 
 
 '''save checkpoint'''
@@ -131,7 +132,7 @@ def main():
         model.load_state_dict(checkpoint['model_state_dict'])
         optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
         epoches = checkpoint['epoch']
-        
+    writer = SummaryWriter(log_dir='tensorboard_logs') #visualize loss over time
 
 
     ## step 7: model training
@@ -160,11 +161,11 @@ def main():
                 ## clip_grad_norm helps prevent the exploding gradient problem in LSTMs.
                 nn.utils.clip_grad_norm_(model.parameters(), clip)
                 optimizer.step()
-                
+                writer.add_scalar('training loss', loss.item(), epoch)
             ##-----------------------------------------------   
             ## step 9: complete code below to save checkpoint
             ##-----------------------------------------------
-            print("**** save checkpoint ****")
+            #print("**** save checkpoint ****")
             _save_checkpoint(ckp_path,model,epoch,batch_id,optimizer) #Not entirely sure what global_step should be
     
     ##------------------------------------------------------------------
@@ -190,6 +191,7 @@ def main():
             accuracy = num_correct / num_total * 100
             print("Batch " + str(batch_id) + " Accuracy: " + str(accuracy))
     print("Accuracy: " + str(total_correct / total * 100))
+    writer.close() #close tensorboard
     
 
 
