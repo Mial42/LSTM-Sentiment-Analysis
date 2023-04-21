@@ -24,6 +24,7 @@ parser = argparse.ArgumentParser(description = "LSTM Sentiment Analysis")
 parser.add_argument("-embedding_dim", dest="embedding_dim", type=int, default=100, help="dim of embedding")
 parser.add_argument("-num_epoches", dest="num_epoches", type=int, default=50, help="number of epoches")
 parser.add_argument("-load_cpt", dest="load_cpt", type=int, default=False, help="load checkpoint")
+parser.add_argument("-hidden_dim", dest="hidden_dim", type=int, default=50, help="hidden_dim")
 args = parser.parse_args()
 
 '''save checkpoint'''
@@ -74,7 +75,7 @@ def main():
     embedding_dim = args.embedding_dim #50
 
     # lstm hidden dim
-    hidden_dim = 50
+    hidden_dim = args.hidden_dim #50
     # binary cross entropy
     output_size = 1
     num_epoches = args.num_epoches
