@@ -112,7 +112,7 @@ def main():
     ## -----------------------------------------------
     model = LSTMModel(vocab_size=vocab_size,output_size=output_size,embedding_dim=embedding_dim,embedding_matrix=embedding_matrix,hidden_dim=hidden_dim,n_layers=n_layers,input_len=input_len)
     #model2 = CNN()
-    model.to()
+    model.to(device)
     ##-----------------------------------------------------------
     ## step 5: complete code to define optimizer and loss function
     ##-----------------------------------------------------------
