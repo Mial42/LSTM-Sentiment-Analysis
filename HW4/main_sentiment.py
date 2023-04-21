@@ -37,6 +37,7 @@ def _save_checkpoint(ckp_path, model, epoches, global_step, optimizer):
 
 
 def adjust_learning_rate(learning_rate, optimizer, epoch):
+    lr = learning_rate
     if epoch > 5:
         lr = learning_rate / 10
     elif epoch > 10:
