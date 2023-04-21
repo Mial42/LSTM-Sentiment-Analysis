@@ -158,6 +158,10 @@ def main():
     print('start model training now')
     print('*'*89)
     if mode == 'train':
+        with open("log.txt", "w") as f: #reset the log
+			# Write the loss and accuracy values to the file
+            f.truncate(0)
+            f.close()
         model.train()
         for epoch in range(epoches, num_epoches):
             adjust_learning_rate(learning_rate,optimizer,epoch)
@@ -181,6 +185,10 @@ def main():
                 nn.utils.clip_grad_norm_(model.parameters(), clip)
                 optimizer.step()
                 writer.add_scalar('training loss', loss.item(), epoch)
+                with open("log.txt", "a") as f:
+    				# Write the loss and accuracy values to the file
+                    f.write("Epoch {}: Loss = {:.4f}\n".format(epoch,loss.item()))
+                    f.close()
             ##-----------------------------------------------   
             ## step 9: complete code below to save checkpoint
             ##-----------------------------------------------
