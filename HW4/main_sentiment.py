@@ -141,7 +141,7 @@ def main():
     if mode == 'train':
         model.train()
         for epoch in range(epoches, num_epoches):
-            for x_batch, y_labels in training_generator:
+            for batch_id, (x_batch,y_labels) in enumerate(training_generator):
                 
                 x_batch, y_labels = x_batch.to(device), y_labels.to(device)
                 ##-----------------------------------------------
@@ -165,7 +165,7 @@ def main():
             ## step 9: complete code below to save checkpoint
             ##-----------------------------------------------
             print("**** save checkpoint ****")
-            _save_checkpoint(ckp_path,model,epoch,0,optimizer) #Not entirely sure what global_step should be
+            _save_checkpoint(ckp_path,model,epoch,batch_id,optimizer) #Not entirely sure what global_step should be
     
     ##------------------------------------------------------------------
     ## step 10: complete code below for model testing
@@ -177,7 +177,7 @@ def main():
     total = 0
     total_correct = 0
     with torch.no_grad():
-        for x_batch, y_labels in test_generator:
+        for batch_id, (x_batch,y_labels) in enumerate(test_generator):
             x_batch, y_labels = x_batch.to(device), y_labels.to(device)
             y_out = model(x_batch)
             y_pred = torch.round(y_out)
@@ -188,7 +188,7 @@ def main():
             total += num_total
             # Compute the accuracy as the fraction of correct predictions
             accuracy = num_correct / num_total * 100
-            print("Accuracy: " + str(accuracy))
+            print("Batch " + str(batch_id) + " Accuracy: " + str(accuracy))
     print("Accuracy: " + str(total_correct / total * 100))
     
 
