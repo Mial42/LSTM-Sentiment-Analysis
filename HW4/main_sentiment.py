@@ -18,7 +18,11 @@ from LSTM import LSTMModel
 from GloveEmbed import _get_embedding
 import time
 from torch.utils.tensorboard import SummaryWriter
+import argparse
 
+parser = argparse.ArgumentParser(description = "LSTM Sentiment Analysis")
+parser.add_argument("-embedding_dim", dest="embedding_dim", type=int, default=100, help="dim of embedding")
+args = parser.parse_args()
 
 '''save checkpoint'''
 def _save_checkpoint(ckp_path, model, epoches, global_step, optimizer):
@@ -53,7 +57,7 @@ def main():
     input_len = 150
 
     ## word embedding length
-    embedding_dim = 50
+    embedding_dim = args.embedding_dim #50
 
     # lstm hidden dim
     hidden_dim = 50
@@ -177,20 +181,39 @@ def main():
     model.eval()
     total = 0
     total_correct = 0
+    true_pos = 0
+    true_neg = 0
+    false_pos = 0
+    false_neg = 0
     with torch.no_grad():
         for batch_id, (x_batch,y_labels) in enumerate(test_generator):
             x_batch, y_labels = x_batch.to(device), y_labels.to(device)
             y_out = model(x_batch)
             y_pred = torch.round(y_out)
             num_correct = (y_pred == y_labels).sum().item()
+            true_pos += (y_pred == y_labels and y_pred == 1).sum().item()
+            true_neg += (y_pred == y_labels and y_pred == 0).sum().item()
+            false_pos += (y_pred != y_labels and y_pred == 1).sum().item()
+            false_neg += (y_pred != y_labels and y_pred == 0).sum().item()
             # Compute the total number of predictions
             num_total = y_labels.size(0)
             total_correct += num_correct
             total += num_total
             # Compute the accuracy as the fraction of correct predictions
-            accuracy = num_correct / num_total * 100
-            print("Batch " + str(batch_id) + " Accuracy: " + str(accuracy))
-    print("Accuracy: " + str(total_correct / total * 100))
+            #accuracy = num_correct / num_total * 100
+            #print("Batch " + str(batch_id) + " Accuracy: " + str(accuracy))
+    precision = true_pos / (true_pos + false_pos)
+    recall = true_pos / (true_pos + false_neg)
+    f_1 = 2 * precision * recall / (precision + recall)
+    print("Embedding Dimension: " + str(embedding_dim))
+    print("Accuracy: " + str(total_correct / total))
+    print("Precision: " + str(precision))
+    print("Recall: " + str(recall))
+    print("f_1: " + str(f_1))
+    print("True Positives: " + true_pos)
+    print("True Negatives: " + true_neg)
+    print("False Positives: " + false_pos)
+    print("False Negatives: " + false_neg)
     writer.close() #close tensorboard
     
 
