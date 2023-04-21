@@ -22,6 +22,7 @@ import argparse
 
 parser = argparse.ArgumentParser(description = "LSTM Sentiment Analysis")
 parser.add_argument("-embedding_dim", dest="embedding_dim", type=int, default=100, help="dim of embedding")
+parser.add_argument("-num_epoches", dest="num_epoches", type=int, default=50, help="number of epoches")
 args = parser.parse_args()
 
 '''save checkpoint'''
@@ -63,7 +64,7 @@ def main():
     hidden_dim = 50
     # binary cross entropy
     output_size = 1
-    num_epoches = 50
+    num_epoches = args.num_epoches
     ## please change the learning rate by youself
     learning_rate = 0.002
     # gradient clipping
