@@ -58,7 +58,7 @@ def main():
     hidden_dim = 50
     # binary cross entropy
     output_size = 1
-    num_epoches = 1
+    num_epoches = 50
     ## please change the learning rate by youself
     learning_rate = 0.002
     # gradient clipping
@@ -116,16 +116,21 @@ def main():
     ##-----------------------------------------------------------
     ## step 5: complete code to define optimizer and loss function
     ##-----------------------------------------------------------
-    optimizer = optim.Adam(,lr=learning_rate)  # 
+    optimizer = optim.Adam(model.parameters(),lr=learning_rate)  # 
     ## define Binary Cross Entropy Loss below
-    loss_fun = 
+    loss_fun = nn.BCELoss()
     
     ## step 6: load checkpoint
+    epoches = 0
     if load_cpt:
         print("*"*10+'loading checkpoint'+'*'*10)
         ##-----------------------------------------------   
         ## complete code below to load checkpoint
         ##-----------------------------------------------
+        checkpoint = torch.load(ckp_path)
+        model.load_state_dict(checkpoint['model_state_dict'])
+        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+        epoches = checkpoint['epoch']
         
 
 
@@ -135,19 +140,19 @@ def main():
     print('*'*89)
     if mode == 'train':
         model.train()
-        for epoches in range(num_epoches):
+        for epoch in range(epoches, num_epoches):
             for x_batch, y_labels in training_generator:
                 
                 x_batch, y_labels = x_batch.to(device), y_labels.to(device)
                 ##-----------------------------------------------
                 ## complete code to get predict result from model
                 ##-----------------------------------------------
-                y_out = 
+                y_out = model(x_batch)
 
                 ##-----------------------------------------------
                 ## complete code to get loss
                 ##-----------------------------------------------
-                loss = 
+                loss = loss_fun(y_out, y_labels)
 
                 ## step 8: back propagation [Done]
                 optimizer.zero_grad()
@@ -160,6 +165,7 @@ def main():
             ## step 9: complete code below to save checkpoint
             ##-----------------------------------------------
             print("**** save checkpoint ****")
+            _save_checkpoint(ckp_path,model,epoch,0,optimizer) #Not entirely sure what global_step should be
     
     ##------------------------------------------------------------------
     ## step 10: complete code below for model testing
@@ -167,8 +173,26 @@ def main():
     ## we can use y_pred = torch.round(y_out) to predict label 1 or 0
     ##------------------------------------------------------------------
     print("----model testing now----")
+    model.eval()
+    total = 0
+    total_correct = 0
+    with torch.no_grad():
+        for x_batch, y_labels in test_generator:
+            x_batch, y_labels = x_batch.to(device), y_labels.to(device)
+            y_out = model(x_batch)
+            y_pred = torch.round(y_out)
+            num_correct = (y_pred == y_labels).sum().item()
+            # Compute the total number of predictions
+            num_total = y_labels.size(0)
+            total_correct += num_correct
+            total += num_total
+            # Compute the accuracy as the fraction of correct predictions
+            accuracy = num_correct / num_total * 100
+            print("Accuracy: " + str(accuracy))
+    print("Accuracy: " + str(total_correct / total * 100))
     
-    
+
+
 
 
 if __name__ == '__main__':
