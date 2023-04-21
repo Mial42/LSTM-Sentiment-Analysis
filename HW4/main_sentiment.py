@@ -26,6 +26,7 @@ parser.add_argument("-num_epoches", dest="num_epoches", type=int, default=50, he
 parser.add_argument("-load_cpt", dest="load_cpt", type=int, default=False, help="load checkpoint")
 parser.add_argument("-hidden_dim", dest="hidden_dim", type=int, default=50, help="hidden dimension")
 parser.add_argument("-n_layers", dest="n_layers", type=int, default=1, help="n layers (1-3)")
+parser.add_argument("-dropout", dest="dropout", type=int, default=0.2, help="dropout")
 args = parser.parse_args()
 
 '''save checkpoint'''
@@ -86,6 +87,7 @@ def main():
     clip = 5
     load_cpt = args.load_cpt #True
     ckp_path = 'cpt/name.pt'
+    dropout = args.dropout
     # embedding_matrix = None
     ## use pre-train Glove embedding or not?
     pretrain = False
@@ -131,7 +133,7 @@ def main():
     ## then import model from LSTM.py below
     ## and also load model to device
     ## -----------------------------------------------
-    model = LSTMModel(vocab_size=vocab_size,output_size=output_size,embedding_dim=embedding_dim,embedding_matrix=embedding_matrix,hidden_dim=hidden_dim,n_layers=n_layers,input_len=input_len)
+    model = LSTMModel(vocab_size=vocab_size,output_size=output_size,embedding_dim=embedding_dim,embedding_matrix=embedding_matrix,hidden_dim=hidden_dim,n_layers=n_layers,input_len=input_len, dropout=dropout)
     #model2 = CNN()
     model.to(device)
     ##-----------------------------------------------------------
