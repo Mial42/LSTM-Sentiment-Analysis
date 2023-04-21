@@ -14,7 +14,7 @@ class LSTMModel(nn.Module):
     LSTM model that will be used to perform Sentiment analysis.
     """
     def __init__(self, vocab_size, output_size, embedding_dim, embedding_matrix,\
-        hidden_dim, n_layers, input_len, pretrain=False):
+        hidden_dim, n_layers, input_len, dropout, pretrain=False):
         """
         Initialize the model by setting up the layers.
         """
@@ -36,7 +36,7 @@ class LSTMModel(nn.Module):
         ## define LSTM model
         self.lstm = nn.LSTM(embedding_dim, hidden_dim, n_layers, batch_first=True)
         ## dropout layer
-        self.dropout = nn.Dropout(0.5)
+        self.dropout = nn.Dropout(dropout)
         
         ## max pool
         self.pool = nn.MaxPool1d(self.input_len)
