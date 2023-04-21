@@ -20,8 +20,8 @@ class MovieDataset(Dataset):
         ##-----------------------------------------------
         ## complete the code to load features and labels
         ##-----------------------------------------------
-        input_x = 
-        label = 
+        input_x = self.df.loc[index, 'input_x']
+        label = self.df.loc[index, 'labels']
         
 
         return torch.tensor(input_x), torch.tensor(label,dtype=torch.float)
