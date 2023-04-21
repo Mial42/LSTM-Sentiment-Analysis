@@ -210,10 +210,10 @@ def main():
     print("Precision: " + str(precision))
     print("Recall: " + str(recall))
     print("f_1: " + str(f_1))
-    print("True Positives: " + true_pos)
-    print("True Negatives: " + true_neg)
-    print("False Positives: " + false_pos)
-    print("False Negatives: " + false_neg)
+    print("True Positives: " + str(true_pos))
+    print("True Negatives: " + str(true_neg))
+    print("False Positives: " + str(false_pos))
+    print("False Negatives: " + str(false_neg))
     writer.close() #close tensorboard
     
 
