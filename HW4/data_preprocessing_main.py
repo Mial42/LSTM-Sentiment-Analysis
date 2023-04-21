@@ -14,8 +14,8 @@ def _read_data():
 	## read the training and test data from files
 	## *** complete the code below ***
 	##-------------------------------------------
-	train_data = pd.read_csv('../test_raw_data.csv', index_col = None, encoding = 'utf8')
-	test_data = pd.read_csv('../train_raw_data.csv', index_col = None, encoding = 'utf8')
+	train_data = pd.read_csv('../training_raw_data.csv', index_col = None, encoding = 'utf8')
+	test_data = pd.read_csv('../test_raw_data.csv', index_col = None, encoding = 'utf8')
 
 	return train_data, test_data
 
